@@ -35,6 +35,16 @@ def test_version_command_import_error(runner: CliRunner) -> None:
         assert "unknown" in result.stdout
 
 
+def test_version_command_package_not_found(runner: CliRunner) -> None:
+    """Test the version command handles PackageNotFoundError gracefully."""
+    from importlib.metadata import PackageNotFoundError
+
+    with patch("pyspur.cli.main.get_version", side_effect=PackageNotFoundError()):
+        result: Result = runner.invoke(app, ["version"])
+        assert result.exit_code == 0
+        assert "unknown" in result.stdout
+
+
 @pytest.mark.parametrize(
     "sqlite_flag,expected_env_var",
     [

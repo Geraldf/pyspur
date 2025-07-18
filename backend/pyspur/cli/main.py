@@ -2,7 +2,7 @@
 
 import os
 import shutil
-from importlib.metadata import version as get_version
+from importlib.metadata import PackageNotFoundError, version as get_version
 from pathlib import Path
 from typing import Optional
 
@@ -28,7 +28,7 @@ def show_version() -> None:
     try:
         ver = get_version("pyspur")
         print(f"PySpur version: [bold green]{ver}[/bold green]")
-    except ImportError:
+    except (ImportError, PackageNotFoundError):
         print("[yellow]PySpur version: unknown (package not installed)[/yellow]")
 
 
